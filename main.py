@@ -38,7 +38,7 @@ class VK:
         albums = {}
         count_photos = 0
         offset = 0
-        print('Загрузка фотографий из ВК')
+        print('--> Загрузка фотографий из ВК')
         for i in tqdm([i for i in range(self.count_iterations())]):
             res = requests.get(f'https://api.vk.com/method/photos.getAll?owner_id={self.owner_id}&offset={offset}&count=200&extended=1&access_token={self.token}&v=5.131')
             for photo in res.json()['response']['items']:
@@ -59,8 +59,8 @@ class VK:
             offset += 200
             time.sleep(3)
         albums = self.rename_albums(albums)
-        print(f'Количество альбомов у пользователя - {self.get_user_name()}: {len(albums)}')
-        print(f'Количество фотографий у пользователя - {self.get_user_name()}: {count_photos}')
+        print(f'--> Количество альбомов у пользователя - {self.get_user_name()}: {len(albums)}')
+        print(f'--> Количество фотографий у пользователя - {self.get_user_name()}: {count_photos}')
         return albums
 
     def generate_json_file(self, albums):
@@ -78,7 +78,7 @@ class VK:
                 })
         with open('json_file', 'wb') as file:
             pickle.dump(self.result_json_file, file)
-        print('Файл json создан!')
+        print('--> Файл json создан!')
         return self.result_json_file
 
     def rename_albums(self, albums):
@@ -148,7 +148,7 @@ class YandexDisk:
         for album, photos in albums.items():
             name_album = album
             time.sleep(1)
-            print(f'\nЗагрузка альбома "{name_album}" на ЯндексДиск:')
+            print(f'\n--> Загрузка альбома "{name_album}" на ЯндексДиск:')
             upload_album = {}
             for photo in photos.items():
                 file_name = photo[0]
@@ -161,7 +161,7 @@ class YandexDisk:
                 user_ya.upload_file(disk_file_path=f'Фотографии {user_name}/{name_album}/{str(i)}.jpg',
                                     filename=url.content)
             time.sleep(1)
-        print('Все фотографии загружены на ЯндексДиск')
+        print('--> Все фотографии загружены на ЯндексДиск!')
 
 
 if __name__ == '__main__':
